@@ -32,7 +32,7 @@ const infoEmbed = new EmbedBuilder()
     })
     .addFields({
         name: 'Source Code',
-        value: '[GitHub]()'
+        value: '[GitHub](https://github.com/SmokeyStack/bao-faq-bot)'
     })
     .setTimestamp();
 
@@ -67,10 +67,12 @@ module.exports = {
         const focusedValue = interaction.options.getFocused();
         const choices = [...faq.keys()];
         const filtered = choices.filter((choice) =>
-            choice.startsWith(focusedValue)
+            choice.includes(focusedValue)
         );
         await interaction.respond(
-            filtered.map((choice) => ({ name: choice, value: choice }))
+            filtered
+                .slice(0, 24)
+                .map((choice) => ({ name: choice, value: choice }))
         );
     }
 };
