@@ -1,0 +1,19 @@
+{
+    "name": "bao-faq-bot",
+    "version": "1.0.0",
+    "description": "",
+    "main": "main.js",
+    "scripts": {
+        "dev": "node deploy.js & node ."
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "dependencies": {
+        "discord.js": "^14.14.1",
+        "dotenv": "^16.3.1"
+    },
+    "devDependencies": {
+        "eslint": "^8.56.0"
+    }
+}
