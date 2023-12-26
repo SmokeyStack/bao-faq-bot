@@ -1,7 +1,8 @@
 const { REST, Routes } = require('discord.js');
-const { clientId, token } = require('./config.json');
 const fs = require('node:fs');
 const path = require('node:path');
+const dotenv = require('dotenv');
+dotenv.config();
 
 console.log('Deploying commands...');
 
@@ -24,8 +25,8 @@ for (const file of commandFiles) {
     }
 }
 
-const rest = new REST().setToken(token);
-rest.put(Routes.applicationCommands(clientId), { body: [] })
+const rest = new REST().setToken(process.env.DISCORD_TOKEN);
+rest.put(Routes.applicationCommands(process.env.CLIENT_TOKEN), { body: [] })
     .then(() => console.log('Successfully deleted all application commands.'))
     .catch(console.error);
 (async () => {
@@ -33,9 +34,12 @@ rest.put(Routes.applicationCommands(clientId), { body: [] })
         console.log(
             `Started refreshing ${commands.length} application (/) commands.`
         );
-        const data = await rest.put(Routes.applicationCommands(clientId), {
-            body: commands
-        });
+        const data = await rest.put(
+            Routes.applicationCommands(process.env.CLIENT_TOKEN),
+            {
+                body: commands
+            }
+        );
         console.log(
             `Successfully reloaded ${data.length} application (/) commands.`
         );
