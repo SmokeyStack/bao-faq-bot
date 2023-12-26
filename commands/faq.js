@@ -36,6 +36,47 @@ const infoEmbed = new EmbedBuilder()
     })
     .setTimestamp();
 
+const previewEmbed = new EmbedBuilder()
+    .setColor(0x0099ff)
+    .setTitle('When Preview?')
+    .setDescription(
+        'Ladies and Gentlemen, it is with great honour to announce that it might be preview day'
+    )
+    .addFields({
+        name: 'When do Previews usually happen?',
+        value: 'Previews usually occur on a Wednesday or Thursday between <t:1703692800:t> and <t:1703700000:t>'
+    })
+    .setImage(
+        'https://i.kym-cdn.com/photos/images/newsfeed/002/237/099/bfd.jpg'
+    )
+    .setTimestamp();
+const notPreviewEmbed = new EmbedBuilder()
+    .setColor(0x0099ff)
+    .setTitle('When Preview?')
+    .setDescription('It is unlikely to be preview day my dudes')
+    .addFields({
+        name: 'When do Previews usually happen?',
+        value: 'Previews usually occur on a Wednesday or Thursday between <t:1703692800:t> and <t:1703700000:t>'
+    })
+    .setImage(
+        'https://i.kym-cdn.com/photos/images/newsfeed/002/237/099/bfd.jpg'
+    )
+    .setTimestamp();
+const weekendPreviewEmbed = new EmbedBuilder()
+    .setColor(0x0099ff)
+    .setTitle('When Preview?')
+    .setDescription(
+        'Mojang devs are off for the weekend, so it is unlikely to be preview day my dudes'
+    )
+    .addFields({
+        name: 'When do Previews usually happen?',
+        value: 'Previews usually occur on a Wednesday or Thursday between <t:1703692800:t> and <t:1703700000:t>'
+    })
+    .setImage(
+        'https://i.kym-cdn.com/photos/images/newsfeed/002/237/099/bfd.jpg'
+    )
+    .setTimestamp();
+
 module.exports = {
     data: new SlashCommandBuilder()
         .setName('faq')
@@ -54,6 +95,9 @@ module.exports = {
         )
         .addSubcommand((subcommand) =>
             subcommand.setName('info').setDescription('Info about the FAQ Bot')
+        )
+        .addSubcommand((subcommand) =>
+            subcommand.setName('preview').setDescription('When Preview?')
         ),
     async execute(interaction) {
         if (interaction.options.getSubcommand() === 'info')
@@ -62,6 +106,14 @@ module.exports = {
             await interaction.reply({
                 embeds: [faq.get(interaction.options.getString('name'))]
             });
+        else if (interaction.options.getSubcommand() === 'preview') {
+            const now = new Date();
+            if (now.getUTCDay() === 0 || now.getUTCDay() === 6)
+                await interaction.reply({ embeds: [weekendPreviewEmbed] });
+            else if (now.getUTCDay() === 3 || now.getUTCDay() === 4)
+                await interaction.reply({ embeds: [previewEmbed] });
+            else await interaction.reply({ embeds: [notPreviewEmbed] });
+        }
     },
     async autocomplete(interaction) {
         const focusedValue = interaction.options.getFocused();
