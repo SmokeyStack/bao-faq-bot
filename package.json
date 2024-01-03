@@ -4,7 +4,8 @@
     "description": "",
     "main": "main.js",
     "scripts": {
-        "dev": "node deploy.js & node ."
+        "dev": "node deploy.js & node .",
+        "test": "node test.mjs"
     },
     "keywords": [],
     "author": "",
@@ -12,7 +13,9 @@
     "dependencies": {
         "discord.js": "^14.14.1",
         "dotenv": "^16.3.1",
-        "js-yaml": "^4.1.0"
+        "js-yaml": "^4.1.0",
+        "tape": "^5.7.2",
+        "yaml-validator": "^5.1.0"
     },
     "devDependencies": {
         "eslint": "^8.56.0"
