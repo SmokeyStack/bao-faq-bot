@@ -12,7 +12,7 @@ Please make a PR to add or delete entries.
 
 ```yaml
 name: entry-name
-title: Title of FAQ Entry
+title: Title Of FAQ Entry
 body: |
     Multi
     Line
@@ -20,3 +20,6 @@ body: |
 ```
 
 Please note the indents are using 4 spaces, not tabs
+
+For `name`, please use snake-case
+For `title`, please capitalize the letter of each word
