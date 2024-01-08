@@ -1,4 +1,5 @@
 name: javascript
+aliases: [ js ]
 title: Learn JavaScript
 body: |
     As the Script API is a framework built on JavaScript code, having an understanding of JavaScript is key.

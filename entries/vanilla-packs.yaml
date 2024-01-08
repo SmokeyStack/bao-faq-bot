@@ -1,4 +1,5 @@
 name: vanilla-packs
+aliases: [ vp ]
 title: Vanilla Packs
 body: |
     Downloadable from: https://github.com/Mojang/bedrock-samples/releases
