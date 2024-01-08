@@ -1,10 +1,10 @@
-const { SlashCommandBuilder, EmbedBuilder } = require('discord.js');
+const { SlashCommandBuilder, EmbedBuilder, Interaction } = require('discord.js');
 const fs = require('node:fs');
 const path = require('node:path');
 const yaml = require('js-yaml');
 
 const faq = new Map();
-const foldersPath = path.join(__dirname, '../entries');
+const foldersPath = path.join(__dirname, '../../entries');
 const commandFiles = fs
     .readdirSync(foldersPath)
     .filter((file) => file.endsWith('.yaml'));
@@ -18,6 +18,11 @@ for (const file of commandFiles) {
         .setDescription(doc['body'])
         .setTimestamp();
     faq.set(doc['name'], faqEntry);
+
+    if (doc['aliases'] === undefined) continue;
+    for (let aliase of doc['aliases']) {
+        faq.set(`${aliase} > ${doc['name']}`, faqEntry);
+    };
 }
 
 const infoEmbed = new EmbedBuilder()
@@ -99,22 +104,30 @@ module.exports = {
         .addSubcommand((subcommand) =>
             subcommand.setName('preview').setDescription('When Preview?')
         ),
+    /** @param { Interaction } interaction */
     async execute(interaction) {
-        if (interaction.options.getSubcommand() === 'info')
-            await interaction.reply({ embeds: [infoEmbed] });
-        else if (interaction.options.getSubcommand() === 'get')
-            await interaction.reply({
-                embeds: [faq.get(interaction.options.getString('name'))]
-            });
-        else if (interaction.options.getSubcommand() === 'preview') {
-            const now = new Date();
-            if (now.getUTCDay() === 0 || now.getUTCDay() === 6)
-                await interaction.reply({ embeds: [weekendPreviewEmbed] });
-            else if (now.getUTCDay() === 3 || now.getUTCDay() === 4)
-                await interaction.reply({ embeds: [previewEmbed] });
-            else await interaction.reply({ embeds: [notPreviewEmbed] });
-        }
+        switch (interaction.options.getSubcommand()) {
+            case 'info':
+                await interaction.reply({ embeds: [ infoEmbed ] });
+            break;
+            case 'get':
+                await interaction.reply({
+                    embeds: [ faq.get(interaction.options.getString('name')) ]
+                });
+            break;
+            case 'preview':
+                const now = new Date();
+                switch (now.getUTCDay()) {
+                    case 0:
+                    case 6: await interaction.reply({ embeds: [ weekendPreviewEmbed ] }); break;
+                    case 3:
+                    case 4: await interaction.reply({ embeds: [ previewEmbed ] }); break;
+                    default: await interaction.reply({ embeds: [ notPreviewEmbed ] }); break;
+                };
+            break;
+        };
     },
+    /** @param { Interaction } interaction */
     async autocomplete(interaction) {
         const focusedValue = interaction.options.getFocused();
         const choices = [...faq.keys()];
