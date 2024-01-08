@@ -18,11 +18,6 @@ for (const file of commandFiles) {
         .setDescription(doc['body'])
         .setTimestamp();
     faq.set(doc['name'], faqEntry);
-
-    if (doc['aliases'] === undefined) continue;
-    for (let aliase of doc['aliases']) {
-        faq.set(`${aliase} > ${doc['name']}`, faqEntry);
-    };
 }
 
 const infoEmbed = new EmbedBuilder()

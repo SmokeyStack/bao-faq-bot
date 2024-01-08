@@ -5,7 +5,7 @@ dotenv.config();
 console.log('Initializing bot...');
 
 const client = new Client({ intents: [GatewayIntentBits.Guilds] });
-require('./src/classes/Events.js')(client);
-require('./src/classes/Interactions.js')(client);
+require('./src/classes/events.js')(client);
+require('./src/classes/interactions.js')(client);
 
 client.login(process.env.DICSORD_TOKEN);
