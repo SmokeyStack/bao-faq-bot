@@ -7,7 +7,7 @@ dotenv.config();
 console.log('Deploying commands...');
 
 const commands = [];
-const foldersPath = path.join(__dirname, 'commands');
+const foldersPath = path.join(__dirname, 'src/commands');
 const commandFiles = fs
     .readdirSync(foldersPath)
     .filter((file) => file.endsWith('.js'));
@@ -34,12 +34,12 @@ rest.put(Routes.applicationCommands(process.env.CLIENT_TOKEN), { body: [] })
         console.log(
             `Started refreshing ${commands.length} application (/) commands.`
         );
+        
         const data = await rest.put(
             Routes.applicationCommands(process.env.CLIENT_TOKEN),
-            {
-                body: commands
-            }
+            { body: commands }
         );
+
         console.log(
             `Successfully reloaded ${data.length} application (/) commands.`
         );
