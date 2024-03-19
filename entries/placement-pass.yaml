@@ -2,7 +2,7 @@ name: placement-pass
 title: Placement Passes
 body: |
     Placement passes can just be thought of as a named ordering for when placement of a feature rule's target feature should occur.
-    *Nothing special occurs during a pass; it'\u2019's just a name.*
+    *Nothing special occurs during a pass; it's just a name.*
     The available passes are:
 
     - `pregeneration_pass`
