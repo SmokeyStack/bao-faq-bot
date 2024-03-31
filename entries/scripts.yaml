@@ -1,4 +1,5 @@
 name: scripts
+aliases: [ scriptapi, scripting, what-is-scripting ]
 title: What are scripts?
 body: |
     Intro to ScriptAPI: https://aka.ms/startwithmcscript
