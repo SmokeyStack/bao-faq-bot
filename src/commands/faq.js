@@ -21,7 +21,7 @@ for (const file of commandFiles) {
 
     if (doc['aliases'] === undefined) continue;
     for (let aliase of doc['aliases']) {
-        faq.set(`${aliase} > ${doc['name']}`, faqEntry);
+        faq.set(`${aliase} -> ${doc['name']}`, faqEntry);
     }
 }
 
