@@ -2,14 +2,16 @@ const { SlashCommandBuilder, EmbedBuilder, Interaction } = require('discord.js')
 const fs = require('node:fs');
 const path = require('node:path');
 const yaml = require('js-yaml');
+const minisearch = require('minisearch');
 
+const search = new minisearch({ fields: [ 'id' ] });
 const faq = new Map();
 const foldersPath = path.join(__dirname, '../../entries');
-const commandFiles = fs
+const entries = fs
     .readdirSync(foldersPath)
     .filter((file) => file.endsWith('.yaml'));
 
-for (const file of commandFiles) {
+for (const file of entries) {
     const filePath = path.join(foldersPath, file);
     const doc = yaml.load(fs.readFileSync(filePath, 'utf8'));
     const faqEntry = new EmbedBuilder()
@@ -24,6 +26,10 @@ for (const file of commandFiles) {
         faq.set(`${aliase} -> ${doc['name']}`, faqEntry);
     }
 }
+
+const faqKeys = [...faq.keys()];
+const faqs = faqKeys.map((id) => ({ id }));
+search.addAll(faqs);
 
 const infoEmbed = new EmbedBuilder()
     .setColor(0x0099ff)
@@ -106,23 +112,53 @@ module.exports = {
         ),
     /** @param { Interaction } interaction */
     async execute(interaction) {
+        await interaction.deferReply();
         switch (interaction.options.getSubcommand()) {
             case 'info':
-                await interaction.reply({ embeds: [ infoEmbed ] });
+                await interaction.editReply({ embeds: [ infoEmbed ] });
             break;
             case 'get':
-                await interaction.reply({
-                    embeds: [ faq.get(interaction.options.getString('name')) ]
-                });
+                let faqName = interaction.options.getString('name');
+                let faqEntry = faq.get(search.search(faqName)[0]?.id);
+
+                if (faqEntry === undefined) {
+                    await interaction.editReply({
+                        ephemeral: true,
+                        content: "Cannot find an faq with the specified tag."
+                    });
+                } else {
+                    const message = await interaction.editReply({
+                        embeds: [ faqEntry ]
+                    });
+
+                    const emoji = '🚫';
+                    await message.react(emoji);
+
+                    const collector = message.createReactionCollector({
+                        filter: (reaction, user) => (
+                            reaction.emoji.name == emoji
+                            && user.id == interaction.user.id
+                        ), time: 10 * 1000
+                    });
+
+                    collector.on('collect', () => message.delete());
+                    collector.on('end', async () => {
+                        message.fetch()
+                        .then(() => {
+                            const reaction = message.reactions.resolve(emoji);
+                            reaction.users.remove(interaction.client.user.id);
+                        }).catch(() => {});
+                    });
+                }
             break;
             case 'preview':
                 const now = new Date();
                 switch (now.getUTCDay()) {
                     case 0:
-                    case 6: await interaction.reply({ embeds: [ weekendPreviewEmbed ] }); break;
+                    case 6: await interaction.editReply({ embeds: [ weekendPreviewEmbed ] }); break;
                     case 3:
-                    case 4: await interaction.reply({ embeds: [ previewEmbed ] }); break;
-                    default: await interaction.reply({ embeds: [ notPreviewEmbed ] }); break;
+                    case 4: await interaction.editReply({ embeds: [ previewEmbed ] }); break;
+                    default: await interaction.editReply({ embeds: [ notPreviewEmbed ] }); break;
                 };
             break;
         };
@@ -130,10 +166,9 @@ module.exports = {
     /** @param { Interaction } interaction */
     async autocomplete(interaction) {
         const focusedValue = interaction.options.getFocused();
-        const choices = [...faq.keys()];
-        const filtered = choices.filter((choice) =>
-            choice.includes(focusedValue)
-        );
+        let filtered = search.search(focusedValue).map(({ id }) => id);
+        if (filtered.length === 0) filtered = faqKeys;
+
         await interaction.respond(
             filtered
                 .slice(0, 24)

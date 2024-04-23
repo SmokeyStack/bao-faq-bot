@@ -12,7 +12,7 @@ Please make a PR to add or delete entries.
 
 ```yaml
 name: entry-name
-aliases: [ other-name ]
+aliases: [ other-entry-name ]
 title: Title Of FAQ Entry
 body: |
     Multi
