@@ -4,7 +4,7 @@ dotenv.config();
 
 console.log('Initializing bot...');
 
-const client = new Client({ intents: [GatewayIntentBits.Guilds] });
+const client = new Client({ intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessageReactions] });
 require('./src/classes/events.js')(client);
 require('./src/classes/interactions.js')(client);
 
