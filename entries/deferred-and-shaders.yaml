@@ -1,4 +1,5 @@
 name: deferred-and-shaders
+aliases: [ deferred, shaders, graphics ]
 title: Deferred Rendering Pipeline and Shaders
 body: |
     - **Shader** is a program that usually runs on the GPU with the purpose of rendering things (calculating color of pixels) or otherwise utilizing GPU for other computations. Shaders, in the context of Bedrock, are modifications that modify or completely replace existing vanilla shader code, which can significantly alter the way objects are rendered in the game. Usually, bedrock shaders enchance the look of the game by modifying the way terrain, entities and clouds are rendered.
