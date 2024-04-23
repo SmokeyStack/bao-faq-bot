@@ -118,7 +118,7 @@ module.exports = {
                 await interaction.editReply({ embeds: [ infoEmbed ] });
             break;
             case 'get':
-                let faqName = interaction.options.getString('name');
+                let faqName = interaction.options.getString('name').trim();
                 let faqEntry = faq.get(search.search(faqName)[0]?.id);
 
                 if (faqEntry === undefined) {
@@ -167,7 +167,7 @@ module.exports = {
     async autocomplete(interaction) {
         const focusedValue = interaction.options.getFocused();
         let filtered = search.search(focusedValue).map(({ id }) => id);
-        if (filtered.length === 0) filtered = faqKeys;
+        if (focusedValue.trim().length === 0) filtered = faqKeys;
 
         await interaction.respond(
             filtered
