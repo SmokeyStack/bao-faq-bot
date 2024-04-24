@@ -165,10 +165,18 @@ module.exports = {
     },
     /** @param { Interaction } interaction */
     async autocomplete(interaction) {
-        const focusedValue = interaction.options.getFocused();
-        let filtered = search.search(focusedValue).map(({ id }) => id);
-        if (focusedValue.trim().length === 0) filtered = faqKeys;
-
+        const focusedValue = interaction.options.getFocused().trim();
+        let filtered = faqKeys
+        .filter((choice) =>
+            choice.includes(focusedValue)
+        );
+        
+        filtered = filtered.concat(
+            search.search(focusedValue)
+            .map(({ id }) => id)
+            .filter((value) => !filtered.includes(value))
+        ).sort();
+        
         await interaction.respond(
             filtered
                 .slice(0, 24)
