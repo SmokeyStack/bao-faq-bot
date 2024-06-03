@@ -1,4 +1,5 @@
 name: content-log
+aliases: [error-log]
 title: What is Content Log?
 body: |
     The content log gives you live feedback for most errors that could occur while developing your add-on.

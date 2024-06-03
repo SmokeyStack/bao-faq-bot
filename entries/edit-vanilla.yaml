@@ -3,10 +3,14 @@ title: What Vanilla Things Can We Modify?
 body: |
     **Can**
     - Entities
+    - Certain Items(Any food items or those found in the windowsapp folder)
+    - Entity loot tables
     - Features
+    - Feature Rules
+    - Biomes
 
     **Can't**
     - Blocks
-    - Items
-    - Biomes
+    - Block loot tables
+    - Items not found in the windowsapp folder
     - Dimensions
