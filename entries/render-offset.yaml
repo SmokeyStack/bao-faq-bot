@@ -1,0 +1,9 @@
+name: render-offset
+aliases: [attachable]
+title: Render Offset replacement
+body: |
+    The `render_offset` component has been removed. This functionality has been replaced with attachables instead.
+
+    Learn more about attachables: https://wiki.bedrock.dev/items/attachables.html
+
+    Learn how to resize your item: https://wiki.bedrock.dev/items/high-resolution-items.html

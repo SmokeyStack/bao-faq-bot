@@ -1,0 +1,8 @@
+name: entity-filters
+aliases: [environment-filters, sensor-filters, filters-list]
+title: Entity Filters
+body: |
+    Entity filters are usually used in environment sensors for choosing matching subjects.
+    List of them can be found below:
+
+    https://bedrock.dev/docs/stable/Entities#Filters

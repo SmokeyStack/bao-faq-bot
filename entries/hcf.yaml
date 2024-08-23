@@ -1,0 +1,17 @@
+name: hcf-removal
+aliases: [custom-components]
+title: HCF Removal and Custom Components
+body: |
+    The Holiday Creator Features experimental toggle has been removed. Along with it includes JSON block and item events. This functionality has been replaced with custom components.
+
+    Please take a look at the following links to learn more about custom components:
+
+    __**Bedrock Wiki**__
+    - [Block Events](<https://wiki.bedrock.dev/blocks/block-events>)
+    - [Block Events Migration to Custom Components](<https://wiki.bedrock.dev/blocks/block-event-migration>)
+    - [Item Events](<https://wiki.bedrock.dev/items/item-events>)
+    - [Item Events Migration to Custom Components](<https://wiki.bedrock.dev/items/item-event-migration>)
+
+    __**MS Docs**__
+    - [Introduction To Custom Components](https://learn.microsoft.com/en-us/minecraft/creator/documents/customcomponents?view=minecraft-bedrock-stable)
+    - [Building With Custom Components](https://learn.microsoft.com/en-us/minecraft/creator/documents/customcomponentstutorial?view=minecraft-bedrock-stable)

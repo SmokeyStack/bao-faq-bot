@@ -1,5 +1,5 @@
 name: lang
-alises: [ localization ]
+aliases: [localization]
 title: Understanding .lang
 body: |
     https://wiki.bedrock.dev/concepts/text-and-translations.html
