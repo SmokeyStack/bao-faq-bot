@@ -1,0 +1,8 @@
+name: docs
+title: Where to Find Minecraft Documentation
+body: |
+    The official Mojang documentation resides at the [MS Docs site](https://learn.microsoft.com/en-us/minecraft/creator/)
+
+    The community wiki resides at https://wiki.bedrock.dev/
+
+    The HTML Docs provided by Mojang in the Bedrock samples resides at https://bedrock.dev/
