@@ -1,10 +1,14 @@
-const { SlashCommandBuilder, EmbedBuilder, Interaction } = require('discord.js');
+const {
+    SlashCommandBuilder,
+    EmbedBuilder,
+    Interaction
+} = require('discord.js');
 const fs = require('node:fs');
 const path = require('node:path');
 const yaml = require('js-yaml');
 const minisearch = require('minisearch');
 
-const search = new minisearch({ fields: [ 'id' ] });
+const search = new minisearch({ fields: ['id'] });
 const faq = new Map();
 const foldersPath = path.join(__dirname, '../../entries');
 const entries = fs
@@ -55,7 +59,7 @@ const previewEmbed = new EmbedBuilder()
     )
     .addFields({
         name: 'When do Previews usually happen?',
-        value: 'Previews usually occur on a Wednesday or Thursday between <t:1703692800:t> and <t:1703700000:t>'
+        value: 'Previews starting from March 11, 2025 will try to release on a Tuesday: https://bsky.app/profile/jorax.bsky.social/post/3lk4lhrpmoc2p'
     })
     .setImage(
         'https://i.kym-cdn.com/photos/images/newsfeed/002/237/099/bfd.jpg'
@@ -67,7 +71,7 @@ const notPreviewEmbed = new EmbedBuilder()
     .setDescription('It is unlikely to be preview day my dudes')
     .addFields({
         name: 'When do Previews usually happen?',
-        value: 'Previews usually occur on a Wednesday or Thursday between <t:1703692800:t> and <t:1703700000:t>'
+        value: 'Previews starting from March 11, 2025 will try to release on a Tuesday: https://bsky.app/profile/jorax.bsky.social/post/3lk4lhrpmoc2p'
     })
     .setImage(
         'https://i.kym-cdn.com/photos/images/newsfeed/002/237/099/bfd.jpg'
@@ -81,7 +85,7 @@ const weekendPreviewEmbed = new EmbedBuilder()
     )
     .addFields({
         name: 'When do Previews usually happen?',
-        value: 'Previews usually occur on a Wednesday or Thursday between <t:1703692800:t> and <t:1703700000:t>'
+        value: 'Previews starting from March 11, 2025 will try to release on a Tuesday: https://bsky.app/profile/jorax.bsky.social/post/3lk4lhrpmoc2p'
     })
     .setImage(
         'https://i.kym-cdn.com/photos/images/newsfeed/002/237/099/bfd.jpg'
@@ -115,8 +119,8 @@ module.exports = {
         await interaction.deferReply();
         switch (interaction.options.getSubcommand()) {
             case 'info':
-                await interaction.editReply({ embeds: [ infoEmbed ] });
-            break;
+                await interaction.editReply({ embeds: [infoEmbed] });
+                break;
             case 'get':
                 let faqName = interaction.options.getString('name').trim();
                 let faqEntry = faq.get(search.search(faqName)[0]?.id);
@@ -124,59 +128,76 @@ module.exports = {
                 if (faqEntry === undefined) {
                     await interaction.editReply({
                         ephemeral: true,
-                        content: "Cannot find an faq with the specified tag."
+                        content: 'Cannot find an faq with the specified tag.'
                     });
                 } else {
                     const message = await interaction.editReply({
-                        embeds: [ faqEntry ]
+                        embeds: [faqEntry]
                     });
 
                     const emoji = '🚫';
                     await message.react(emoji);
 
                     const collector = message.createReactionCollector({
-                        filter: (reaction, user) => (
-                            reaction.emoji.name == emoji
-                            && user.id == interaction.user.id
-                        ), time: 10 * 1000
+                        filter: (reaction, user) =>
+                            reaction.emoji.name == emoji &&
+                            user.id == interaction.user.id,
+                        time: 10 * 1000
                     });
 
                     collector.on('collect', () => message.delete());
                     collector.on('end', async () => {
-                        message.fetch()
-                        .then(() => {
-                            const reaction = message.reactions.resolve(emoji);
-                            reaction.users.remove(interaction.client.user.id);
-                        }).catch(() => {});
+                        message
+                            .fetch()
+                            .then(() => {
+                                const reaction =
+                                    message.reactions.resolve(emoji);
+                                reaction.users.remove(
+                                    interaction.client.user.id
+                                );
+                            })
+                            .catch(() => {});
                     });
                 }
-            break;
+                break;
             case 'preview':
                 const now = new Date();
                 switch (now.getUTCDay()) {
                     case 0:
-                    case 6: await interaction.editReply({ embeds: [ weekendPreviewEmbed ] }); break;
+                    case 6:
+                        await interaction.editReply({
+                            embeds: [weekendPreviewEmbed]
+                        });
+                        break;
                     case 3:
-                    case 4: await interaction.editReply({ embeds: [ previewEmbed ] }); break;
-                    default: await interaction.editReply({ embeds: [ notPreviewEmbed ] }); break;
-                };
-            break;
-        };
+                    case 4:
+                        await interaction.editReply({ embeds: [previewEmbed] });
+                        break;
+                    default:
+                        await interaction.editReply({
+                            embeds: [notPreviewEmbed]
+                        });
+                        break;
+                }
+                break;
+        }
     },
     /** @param { Interaction } interaction */
     async autocomplete(interaction) {
         const focusedValue = interaction.options.getFocused().trim();
-        let filtered = faqKeys
-        .filter((choice) =>
+        let filtered = faqKeys.filter((choice) =>
             choice.includes(focusedValue)
         );
-        
-        filtered = filtered.concat(
-            search.search(focusedValue)
-            .map(({ id }) => id)
-            .filter((value) => !filtered.includes(value))
-        ).sort();
-        
+
+        filtered = filtered
+            .concat(
+                search
+                    .search(focusedValue)
+                    .map(({ id }) => id)
+                    .filter((value) => !filtered.includes(value))
+            )
+            .sort();
+
         await interaction.respond(
             filtered
                 .slice(0, 24)
