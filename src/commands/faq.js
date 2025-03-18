@@ -169,8 +169,7 @@ module.exports = {
                             embeds: [weekendPreviewEmbed]
                         });
                         break;
-                    case 3:
-                    case 4:
+                    case 2:
                         await interaction.editReply({ embeds: [previewEmbed] });
                         break;
                     default:
