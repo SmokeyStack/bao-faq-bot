@@ -20,6 +20,9 @@ body: |
     `§f` White
     `§g` Minecoin Gold
     
+    `§h` Quartz
+    `§i` Iron
+    `§j` Netherite
     `§m` Redstone
     `§n` Copper
     `§p` Gold
@@ -27,9 +30,7 @@ body: |
     `§s` Diamond
     `§t` Lapis
     `§u` Amethyst
-    `§h` Quartz
-    `§i` Iron
-    `§j` Netherite
+    `§v` Resin
     
     `§k` Obfuscated
     `§l` Bold
