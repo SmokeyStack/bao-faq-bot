@@ -1,0 +1,7 @@
+name: advertisement
+aliases: [ job-offer ]
+title: Advertisement In BAO
+body: |
+    This server doesn't allow advertisement of your own product/hire people for Add-On/server development.
+    - If you want to share your own product use <#1046947779118895114>.
+    - If you are looking to hire someone for Add-On/server development, it's better to ask at [Bucket of Crabs](<https://www.bucketofcrabs.net/>).
