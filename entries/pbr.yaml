@@ -1,0 +1,7 @@
+name: pbr
+aliases: [vibrant-visuals]
+title: Making Your Pack Vibrant Visuals Compatible
+body: |
+    To make your pack compatible with Vibrant Visuals, your `manifest.json` has to have:
+    - `min_engine_version`: [1, 21, 120] or higher
+    - `capabilities`: "pbr"
